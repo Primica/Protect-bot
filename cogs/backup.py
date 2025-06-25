@@ -6,6 +6,7 @@ import os
 import asyncio
 from datetime import datetime
 import shutil
+from typing import Optional
 
 class Backup(commands.Cog):
     def __init__(self, bot):
@@ -160,7 +161,7 @@ class Backup(commands.Cog):
                     "tags": {
                         "bot_id": role.tags.bot_id if role.tags and role.tags.bot_id else None,
                         "integration_id": role.tags.integration_id if role.tags and role.tags.integration_id else None,
-                        "premium_subscriber": role.tags.premium_subscriber if role.tags else None
+                        "premium_subscriber": role.tags.premium_subscriber if role.tags and hasattr(role.tags, 'premium_subscriber') else None
                     }
                 }
                 backup_data["roles"].append(role_data)
@@ -202,30 +203,32 @@ class Backup(commands.Cog):
             backup_data["channels"].append(channel_data)
 
         # Sauvegarder les salons d'annonces
-        for channel in guild.news_channels:
-            channel_data = {
-                "name": channel.name,
-                "type": "news",
-                "position": channel.position,
-                "category_id": channel.category.id if channel.category else None,
-                "topic": channel.topic,
-                "nsfw": channel.nsfw,
-                "overwrites": self.get_overwrites(channel.overwrites)
-            }
-            backup_data["channels"].append(channel_data)
+        for channel in guild.channels:
+            if channel.type == discord.ChannelType.news:
+                channel_data = {
+                    "name": channel.name,
+                    "type": "news",
+                    "position": channel.position,
+                    "category_id": channel.category.id if channel.category else None,
+                    "topic": channel.topic,
+                    "nsfw": channel.nsfw,
+                    "overwrites": self.get_overwrites(channel.overwrites)
+                }
+                backup_data["channels"].append(channel_data)
 
         # Sauvegarder les salons de forum
-        for channel in guild.forums:
-            channel_data = {
-                "name": channel.name,
-                "type": "forum",
-                "position": channel.position,
-                "category_id": channel.category.id if channel.category else None,
-                "topic": channel.topic,
-                "nsfw": channel.nsfw,
-                "overwrites": self.get_overwrites(channel.overwrites)
-            }
-            backup_data["channels"].append(channel_data)
+        for channel in guild.channels:
+            if channel.type == discord.ChannelType.forum:
+                channel_data = {
+                    "name": channel.name,
+                    "type": "forum",
+                    "position": channel.position,
+                    "category_id": channel.category.id if channel.category else None,
+                    "topic": channel.topic,
+                    "nsfw": channel.nsfw,
+                    "overwrites": self.get_overwrites(channel.overwrites)
+                }
+                backup_data["channels"].append(channel_data)
 
         # Sauvegarder les emojis
         for emoji in guild.emojis:
@@ -422,7 +425,7 @@ class Backup(commands.Cog):
 
     @commands.command(name='backup', aliases=['b'], brief="Gère les sauvegardes du serveur")
     @commands.has_permissions(administrator=True)
-    async def backup(self, ctx, action: str, name: str, *, description: str = ""):
+    async def backup(self, ctx, action: str, *, name: Optional[str] = None, description: str = ""):
         """Gère les sauvegardes du serveur (Admin uniquement)"""
         if action.lower() == "create":
             if not name:
