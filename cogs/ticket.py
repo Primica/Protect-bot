@@ -3,7 +3,7 @@ from discord.ext import commands
 import datetime
 import asyncio
 
-TICKET_CATEGORY_ID = 1387349264237330473
+TICKET_CATEGORY_ID = 1387349264237330473 # 1386721888243421225 : Tsukio
 
 class TicketReasonModal(discord.ui.Modal):
     def __init__(self, *args, **kwargs):
