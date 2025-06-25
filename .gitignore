@@ -1,0 +1,5 @@
+.venv/
+config.json
+banque_logs.json
+server.db
+backups

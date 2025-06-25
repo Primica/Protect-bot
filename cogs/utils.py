@@ -1,6 +1,7 @@
 import discord 
 from discord.ext import commands
 from functools import wraps
+from datetime import datetime, timedelta
 
 class Utils(commands.Cog):
     def __init__(self, bot):
@@ -80,6 +81,17 @@ class Utils(commands.Cog):
         except discord.HTTPException as e:
             await ctx.send(f'❌ Error clearing messages: {str(e)}')
             print(f"[ERROR] Error in clear command: {str(e)}")
+
+    @commands.command(name='timeout', aliases=['to'], brief='Timeout a user', usage='+timeout <user> <duration> <reason>')
+    @commands.has_permissions(manage_roles=True)
+    async def timeout(self, ctx, user: discord.Member, duration: int, *, reason=None):
+        try:
+            duration_seconds = duration * 60
+            timeout_end = datetime.now() + timedelta(seconds=duration_seconds)
+            await user.timeout(timeout_end, reason=reason)
+            await ctx.send(f'✅ Timed out {user.mention} for {duration} minutes ({reason})')
+        except discord.Forbidden:
+            await ctx.send('❌ I do not have permission to timeout this user')
 
     # -- ERROR HANDLERS --
 
