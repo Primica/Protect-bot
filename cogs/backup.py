@@ -422,7 +422,7 @@ class Backup(commands.Cog):
 
     @commands.command(name='backup', aliases=['b'], brief="Gère les sauvegardes du serveur")
     @commands.has_permissions(administrator=True)
-    async def backup(self, ctx, action: str, name: str = None, *, description: str = ""):
+    async def backup(self, ctx, action: str, name: str, *, description: str = ""):
         """Gère les sauvegardes du serveur (Admin uniquement)"""
         if action.lower() == "create":
             if not name:
@@ -530,10 +530,10 @@ class Backup(commands.Cog):
             )
             success_embed.add_field(name="Serveur", value=ctx.guild.name, inline=True)
             success_embed.add_field(name="Créée par", value=ctx.author.mention, inline=True)
-            success_embed.add_field(name="Rôles", value=len(backup_data["roles"]), inline=True)
-            success_embed.add_field(name="Catégories", value=len(backup_data["categories"]), inline=True)
-            success_embed.add_field(name="Salons", value=len(backup_data["channels"]), inline=True)
-            success_embed.add_field(name="Emojis", value=len(backup_data["emojis"]), inline=True)
+            success_embed.add_field(name="Rôles", value=str(len(backup_data["roles"])), inline=True)
+            success_embed.add_field(name="Catégories", value=str(len(backup_data["categories"])), inline=True)
+            success_embed.add_field(name="Salons", value=str(len(backup_data["channels"])), inline=True)
+            success_embed.add_field(name="Emojis", value=str(len(backup_data["emojis"])), inline=True)
             success_embed.add_field(name="Description", value=description or "Aucune", inline=False)
             success_embed.set_footer(text=f"Fichier: {name}.json")
             
@@ -637,10 +637,10 @@ class Backup(commands.Cog):
                     description=f"Le serveur a été restauré avec la sauvegarde **{name}** !",
                     color=discord.Color.green()
                 )
-                success_embed.add_field(name="Rôles créés", value=len(backup_data["roles"]), inline=True)
-                success_embed.add_field(name="Catégories créées", value=len(backup_data["categories"]), inline=True)
-                success_embed.add_field(name="Salons créés", value=len(backup_data["channels"]), inline=True)
-                success_embed.add_field(name="Emojis créés", value=len(backup_data["emojis"]), inline=True)
+                success_embed.add_field(name="Rôles créés", value=str(len(backup_data["roles"])), inline=True)
+                success_embed.add_field(name="Catégories créées", value=str(len(backup_data["categories"])), inline=True)
+                success_embed.add_field(name="Salons créés", value=str(len(backup_data["channels"])), inline=True)
+                success_embed.add_field(name="Emojis créés", value=str(len(backup_data["emojis"])), inline=True)
                 success_embed.set_footer(text=f"Restauré par {ctx.author.name}")
                 
                 await progress_msg.edit(embed=success_embed)
@@ -731,10 +731,10 @@ class Backup(commands.Cog):
         embed.add_field(name="Créée par", value=creator_name, inline=True)
         
         if backup_data:
-            embed.add_field(name="Rôles", value=len(backup_data["roles"]), inline=True)
-            embed.add_field(name="Catégories", value=len(backup_data["categories"]), inline=True)
-            embed.add_field(name="Salons", value=len(backup_data["channels"]), inline=True)
-            embed.add_field(name="Emojis", value=len(backup_data["emojis"]), inline=True)
+            embed.add_field(name="Rôles", value=str(len(backup_data["roles"])), inline=True)
+            embed.add_field(name="Catégories", value=str(len(backup_data["categories"])), inline=True)
+            embed.add_field(name="Salons", value=str(len(backup_data["channels"])), inline=True)
+            embed.add_field(name="Emojis", value=str(len(backup_data["emojis"])), inline=True)
         
         embed.add_field(name="Description", value=backup_info[5] or "Aucune", inline=False)
         embed.add_field(name="Fichier", value=f"{name}.json", inline=False)
