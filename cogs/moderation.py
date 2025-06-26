@@ -3,7 +3,7 @@ from discord.ext import commands
 import sqlite3
 from datetime import datetime
 
-class Ban(commands.Cog):
+class Moderation(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.db_path = 'server.db'
@@ -441,4 +441,4 @@ class Ban(commands.Cog):
             await ctx.send(embed=embed)
 
 def setup(bot):
-    bot.add_cog(Ban(bot))
+    bot.add_cog(Moderation(bot))

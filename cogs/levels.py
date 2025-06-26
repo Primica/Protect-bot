@@ -1,10 +1,8 @@
 import discord
 from discord.ext import commands
 import sqlite3
-import json
 import asyncio
-from datetime import datetime, timedelta
-import os
+from datetime import datetime
 
 class Levels(commands.Cog):
     def __init__(self, bot):

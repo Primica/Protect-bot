@@ -1,10 +1,8 @@
 import discord
 from discord.ext import commands
 import sqlite3
-import json
 import asyncio
 from datetime import datetime, timedelta
-import os
 
 class Security(commands.Cog):
     def __init__(self, bot):

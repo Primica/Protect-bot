@@ -2,8 +2,7 @@ import discord
 from discord.ext import commands
 import sqlite3
 import json
-import asyncio
-from datetime import datetime, timedelta
+from datetime import datetime
 import os
 
 class Banque(commands.Cog):
@@ -101,7 +100,7 @@ class Banque(commands.Cog):
 
     # -- COMMANDS --
 
-    @commands.command(name='bank', aliases=['bk'], brief="Affiche le solde bancaire d'un membre")
+    @commands.command(name='bank', aliases=['bk'], brief="Affiche le solde bancaire d'un membre", usage="+bank [@membre]")
     async def bank(self, ctx, member: discord.Member = None):
         """Affiche le solde bancaire d'un membre"""
         if member is None:
@@ -120,7 +119,7 @@ class Banque(commands.Cog):
         
         await ctx.send(embed=embed)
 
-    @commands.command(name='give', aliases=['donner'], brief="Donne de l'argent à un membre", usage="<@membre> <montant>")
+    @commands.command(name='give', aliases=['donner'], brief="Donne de l'argent à un membre", usage="+give <@membre> <montant>")
     @commands.has_permissions(administrator=True)
     async def give(self, ctx, member: discord.Member, amount: int):
         """Donne de l'argent à un membre (Admin uniquement)"""
@@ -161,7 +160,7 @@ class Banque(commands.Cog):
             )
             await ctx.send(embed=embed)
 
-    @commands.command(name='classement', aliases=['tableau'], brief="Affiche le classement des plus riches")
+    @commands.command(name='classement', aliases=['tableau'], brief="Affiche le classement des plus riches", usage="+classement")
     async def top(self, ctx):
         """Affiche le classement des plus riches"""
         conn = sqlite3.connect(self.db_path)
@@ -205,7 +204,7 @@ class Banque(commands.Cog):
         embed.set_footer(text=f"Demandé par {ctx.author.name}")
         await ctx.send(embed=embed)
 
-    @commands.command(name='casino', aliases=['cas'], brief="Joue au casino pour gagner de l'argent (cooldown 5 minutes)")
+    @commands.command(name='casino', aliases=['cas'], brief="Joue au casino pour gagner de l'argent (cooldown 5 minutes)", usage="+casino")
     async def casino(self, ctx):
         """Joue au casino pour gagner de l'argent (cooldown 5 minutes)"""
         user_id = ctx.author.id
@@ -277,7 +276,7 @@ class Banque(commands.Cog):
         
         await ctx.send(embed=embed)
 
-    @commands.command(name='logs', aliases=['lg'], brief="Affiche les derniers logs de transactions (Admin uniquement)", usage="<limite>")
+    @commands.command(name='logs', aliases=['lg'], brief="Affiche les derniers logs de transactions (Admin uniquement)", usage="+logs <limite>")
     @commands.has_permissions(administrator=True)
     async def logs(self, ctx, limit: int = 10):
         """Affiche les derniers logs de transactions (Admin uniquement)"""
